@@ -13,3 +13,5 @@ vim.opt.number = true
 vim.opt.incsearch = true
 vim.opt.hlsearch = true
 require("config.lazy")
+-- vim.opt.tabstop = 2
+-- vim.opt.shiftwidth = 2
