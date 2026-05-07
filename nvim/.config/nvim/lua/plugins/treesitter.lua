@@ -10,7 +10,7 @@ return {
 			return
 		end
 		configs.setup({
-			ensure_installed = { "lua", "javascript", "typescript", "tsx", "css", "html", "json" },
+			ensure_installed = { "all" },
 			sync_install = false,
 			auto_install = true,
 			highlight = { enable = true },

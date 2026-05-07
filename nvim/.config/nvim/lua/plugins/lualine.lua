@@ -12,7 +12,7 @@ return {
 				lualine_y = {},
 				lualine_z = {
 					function()
-						return os.date("%S:%M:%I %p; %A, %d %B %Y")
+						return os.date("%I:%M:%S %p; %A, %d %B %Y")
 					end,
 				},
 			},
