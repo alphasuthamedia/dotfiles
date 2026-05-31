@@ -1,0 +1,1 @@
+mengikuti perkembangan jaman lur
