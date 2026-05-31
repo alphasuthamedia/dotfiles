@@ -13,9 +13,3 @@ return -- lazy.nvim
   },
 },
 
--- Other package managers
-require("codecompanion").setup({
-  opts = {
-    log_level = "DEBUG", -- or "TRACE"
-  }
-})
