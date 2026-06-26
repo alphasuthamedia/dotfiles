@@ -1,6 +1,0 @@
-[submodule "dotfiles-secret"]
-	path = dotfiles-secret
-	url = git@github.com:alphasuthamedia/dotfiles-secret.git
-[submodule "zsh-related/.oh-my-zsh"]
-	path = zsh-related/.oh-my-zsh
-	url = https://github.com/ohmyzsh/ohmyzsh.git
