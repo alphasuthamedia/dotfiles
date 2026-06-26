@@ -10,7 +10,7 @@ export EDITOR=nvim
 if [[ -r /usr/share/bash-completion/bash_completion ]]; then
     source /usr/share/bash-completion/bash_completion
 else
-    echo "bash-completion  missing woi"
+    echo "bash-completion missing woi"
 fi
 
 if command -v fzf >/dev/null 2>&1; then
