@@ -13,9 +13,12 @@
     nixfmt
     nixd
     htop
-    (config.lib.nixGL.wrap pkgs.alacritty)
+    (config.lib.nixGL.wrap alacritty)
     nerd-fonts.jetbrains-mono
     pinentry-curses
+    (config.lib.nixGL.wrap firefox)
+    iotop
+    nethogs
   ];
 
   home.sessionVariables.EDITOR = "nvim";
