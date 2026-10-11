@@ -7,9 +7,6 @@
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
-    ripgrep
-    nixfmt
-    nixd
     htop
     (config.lib.nixGL.wrap alacritty)
     nerd-fonts.jetbrains-mono
@@ -17,7 +14,6 @@
     (config.lib.nixGL.wrap firefox)
     iotop
     nethogs
-    fd
     wget
     jq
     curl
@@ -109,12 +105,25 @@
       enable = true;
       package = pkgs.vimPlugins.coc-nvim;
     };
+
+    extraPackages = with pkgs; [
+      nixd
+      nixfmt
+      ripgrep
+      fd
+      lua-language-server
+      stylua
+    ];
   };
 
   xdg.enable = true;
   targets.genericLinux.enable = true;
+xdg.configFile."nvim" = {
+  source = config.lib.file.mkOutOfStoreSymlink
+    "/home/alpha/dotfiles/config/nvim";
+  recursive = false;
+};
 
-  xdg.configFile."nvim".source =
-    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/nvim";
   xdg.configFile."alacritty".source = ./config/alacritty;
+
 }
