@@ -30,6 +30,16 @@
     #     --user-data-dir="$HOME/.local/share/discord-2" \
     #     "$@"
     # '')
+
+    neovim
+    nixd
+    nixfmt
+    ripgrep
+    fd
+    lua-language-server
+    stylua
+    gcc
+    nodejs
   ];
 
   programs.aria2 = {
@@ -95,29 +105,20 @@
     extraConfig = builtins.readFile ./config/tmux.conf;
   };
 
-  programs.neovim = {
-    enable = true;
-    viAlias = true;
-    vimAlias = true;
-    defaultEditor = true;
+  home.sessionVariables = {
+    EDITOR = "nvim";
+    VISUAL = "nvim";
+  };
 
-    extraPackages = with pkgs; [
-      nixd
-      nixfmt
-      ripgrep
-      fd
-      lua-language-server
-      stylua
-      gcc
-      nodejs
-    ];
+  programs.bash.shellAliases = {
+    vi = "nvim";
+    vim = "nvim";
   };
 
   xdg.enable = true;
   targets.genericLinux.enable = true;
   xdg.configFile."nvim" = {
-    source = config.lib.file.mkOutOfStoreSymlink "/home/alpha/dotfiles/config/nvim";
-    recursive = false;
+    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/nvim";
   };
 
   xdg.configFile."alacritty".source = ./config/alacritty;
