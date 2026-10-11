@@ -101,11 +101,6 @@
     vimAlias = true;
     defaultEditor = true;
 
-    coc = {
-      enable = true;
-      package = pkgs.vimPlugins.coc-nvim;
-    };
-
     extraPackages = with pkgs; [
       nixd
       nixfmt
@@ -113,16 +108,17 @@
       fd
       lua-language-server
       stylua
+      gcc
+      nodejs
     ];
   };
 
   xdg.enable = true;
   targets.genericLinux.enable = true;
-xdg.configFile."nvim" = {
-  source = config.lib.file.mkOutOfStoreSymlink
-    "/home/alpha/dotfiles/config/nvim";
-  recursive = false;
-};
+  xdg.configFile."nvim" = {
+    source = config.lib.file.mkOutOfStoreSymlink "/home/alpha/dotfiles/config/nvim";
+    recursive = false;
+  };
 
   xdg.configFile."alacritty".source = ./config/alacritty;
 
