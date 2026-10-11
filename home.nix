@@ -7,8 +7,6 @@
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
-    neovim
-    fd
     ripgrep
     nixfmt
     nixd
@@ -19,9 +17,33 @@
     (config.lib.nixGL.wrap firefox)
     iotop
     nethogs
+    fd
+    wget
+    jq
+    curl
+    fastfetch
+
+    # discord
+    # (writeShellScriptBin "discord-1" ''
+    #   exec ${discord}/bin/discord \
+    #     --user-data-dir="$HOME/.local/share/discord-1" \
+    #     "$@"
+    # '')
+    # (writeShellScriptBin "discord-2" ''
+    #   exec ${discord}/bin/discord \
+    #     --user-data-dir="$HOME/.local/share/discord-2" \
+    #     "$@"
+    # '')
   ];
 
-  home.sessionVariables.EDITOR = "nvim";
+  programs.aria2 = {
+    enable = true;
+    systemd.enable = true;
+  };
+  programs.fd = {
+    enable = true;
+    hidden = true;
+  };
 
   programs.git = {
     enable = true;
@@ -41,7 +63,11 @@
   };
 
   programs.gpg.enable = true;
-  services.gpg-agent.enable = true;
+  services.gpg-agent = {
+    enable = true;
+    enableBashIntegration = true;
+    enableSshSupport = true;
+  };
 
   programs.starship = {
     enable = true;
@@ -71,6 +97,18 @@
   programs.tmux = {
     enable = true;
     extraConfig = builtins.readFile ./config/tmux.conf;
+  };
+
+  programs.neovim = {
+    enable = true;
+    viAlias = true;
+    vimAlias = true;
+    defaultEditor = true;
+
+    coc = {
+      enable = true;
+      package = pkgs.vimPlugins.coc-nvim;
+    };
   };
 
   xdg.enable = true;
