@@ -1,46 +1,53 @@
-{ config, pkgs, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   home.username = "alpha";
-  home.homeDirectory = "/home/alpha";
+  home.homeDirectory = if pkgs.stdenv.isDarwin then "/Users/alpha" else "/home/alpha";
   home.stateVersion = "26.05";
 
   fonts.fontconfig.enable = true;
   programs.home-manager.enable = true;
 
-  home.packages = with pkgs; [
-    htop
-    (config.lib.nixGL.wrap alacritty)
-    nerd-fonts.jetbrains-mono
-    pinentry-curses
-    (config.lib.nixGL.wrap firefox)
-    iotop
-    nethogs
-    wget
-    jq
-    curl
-    fastfetch
+  home.packages =
+    (with pkgs; [
+      htop
+      nerd-fonts.jetbrains-mono
+      pinentry-curses
+      wget
+      jq
+      curl
+      fastfetch
 
-    # discord
-    # (writeShellScriptBin "discord-1" ''
-    #   exec ${discord}/bin/discord \
-    #     --user-data-dir="$HOME/.local/share/discord-1" \
-    #     "$@"
-    # '')
-    # (writeShellScriptBin "discord-2" ''
-    #   exec ${discord}/bin/discord \
-    #     --user-data-dir="$HOME/.local/share/discord-2" \
-    #     "$@"
-    # '')
-
-    neovim
-    nixd
-    nixfmt
-    ripgrep
-    fd
-    lua-language-server
-    stylua
-    gcc
-    nodejs
-  ];
+      neovim
+      nixd
+      nixfmt
+      ripgrep
+      fd
+      lua-language-server
+      stylua
+      gcc
+      nodejs
+    ])
+    ++ lib.optionals pkgs.stdenv.isLinux (
+      with pkgs;
+      [
+        (config.lib.nixGL.wrap alacritty)
+        (config.lib.nixGL.wrap firefox)
+        iotop
+        nethogs
+      ]
+    )
+    ++ lib.optionals pkgs.stdenv.isDarwin (
+      with pkgs;
+      [
+        alacritty
+        firefox
+      ]
+    );
 
   programs.aria2 = {
     enable = true;
@@ -116,7 +123,8 @@
   };
 
   xdg.enable = true;
-  targets.genericLinux.enable = true;
+  targets.genericLinux.enable = pkgs.stdenv.isLinux;
+
   xdg.configFile."nvim" = {
     source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/nvim";
   };
