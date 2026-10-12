@@ -14,6 +14,7 @@
 
   home.packages =
     (with pkgs; [
+      bash
       htop
       nerd-fonts.jetbrains-mono
       pinentry-curses
