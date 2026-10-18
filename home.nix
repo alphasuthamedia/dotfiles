@@ -110,6 +110,7 @@
 
   programs.tmux = {
     enable = true;
+    mouse = true;
     extraConfig = builtins.readFile ./config/tmux.conf;
   };
 
