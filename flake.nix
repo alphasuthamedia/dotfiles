@@ -9,7 +9,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixgl = {
+    nixGL = {
       url = "github:nix-community/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -19,7 +19,7 @@
     {
       nixpkgs,
       home-manager,
-      nixgl,
+      nixGL,
       ...
     }:
     {
@@ -33,7 +33,7 @@
               targets.genericLinux.enable = true;
 
               targets.genericLinux.nixGL = {
-                packages = nixgl.packages.x86_64-linux;
+                packages = nixGL.packages.x86_64-linux;
                 defaultWrapper = "mesa";
               };
             }

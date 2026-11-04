@@ -60,7 +60,7 @@ in
 
   fonts.fontconfig.enable = true;
   targets.genericLinux.enable = true;
-
+  
   programs = {
     home-manager.enable = true;
 
@@ -108,8 +108,10 @@ in
 
     tmux.enable = true;
 
+
     alacritty = {
       enable = true;
+      package = config.lib.nixGL.wrap pkgs.alacritty;
       settings.font.normal.family = "JetBrainsMono Nerd Font";
     };
 
