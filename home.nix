@@ -1,126 +1,132 @@
-{ config, pkgs, ... }: {
-  home.username = "alpha";
-  home.homeDirectory = "/home/alpha";
-  home.stateVersion = "26.05";
+{ config, lib, pkgs, ... }:
+let
+  pwd = builtins.getEnv "PWD";
+  dotfiles = pwd;
+  link = path: config.lib.file.mkOutOfStoreSymlink "${dotfiles}/${path}";
+in
+{
+  home = {
+    username = "alpha";
+    homeDirectory = "/home/alpha";
+    stateVersion = "26.05";
+
+    packages = with pkgs; [
+      htop
+      iotop
+      nethogs
+      fastfetch
+
+      wget
+      curl
+      jq
+      ripgrep
+
+      neovim
+      nixd
+      nixfmt
+      lua-language-server
+      stylua
+      gcc
+      nodejs
+
+      terraform
+      kubectl
+      (google-cloud-sdk.withExtraComponents [
+        google-cloud-sdk.components.gke-gcloud-auth-plugin
+      ])
+
+      nerd-fonts.jetbrains-mono
+    ];
+
+    sessionVariables = {
+      EDITOR = "nvim";
+      VISUAL = "nvim";
+      USE_GKE_GCLOUD_AUTH_PLUGIN = "True";
+    };
+
+    shellAliases = {
+      vi = "nvim";
+      vim = "nvim";
+      k = "kubectl";
+      hms = "home-manager switch --flake .#alpha --impure";
+    };
+  };
+
+  nixpkgs.config.allowUnfreePredicate =
+    pkg: builtins.elem (lib.getName pkg) [
+      "terraform"
+      "google-cloud-sdk"
+    ];
 
   fonts.fontconfig.enable = true;
-  programs.home-manager.enable = true;
+  targets.genericLinux.enable = true;
 
-  home.packages = with pkgs; [
-    htop
-    (config.lib.nixGL.wrap alacritty)
-    nerd-fonts.jetbrains-mono
-    pinentry-curses
-    (config.lib.nixGL.wrap firefox)
-    iotop
-    nethogs
-    wget
-    jq
-    curl
-    fastfetch
+  programs = {
+    home-manager.enable = true;
 
-    # discord
-    # (writeShellScriptBin "discord-1" ''
-    #   exec ${discord}/bin/discord \
-    #     --user-data-dir="$HOME/.local/share/discord-1" \
-    #     "$@"
-    # '')
-    # (writeShellScriptBin "discord-2" ''
-    #   exec ${discord}/bin/discord \
-    #     --user-data-dir="$HOME/.local/share/discord-2" \
-    #     "$@"
-    # '')
-
-    neovim
-    nixd
-    nixfmt
-    ripgrep
-    fd
-    lua-language-server
-    stylua
-    gcc
-    nodejs
-  ];
-
-  programs.aria2 = {
-    enable = true;
-    systemd.enable = true;
-  };
-  programs.fd = {
-    enable = true;
-    hidden = true;
-  };
-
-  programs.git = {
-    enable = true;
-    signing = {
-      key = "189710A9F3ED18E110296F94B4C990B982D2E33E"; # key ID atau fingerprint lengkap
-      format = "openpgp";
-      signByDefault = true;
-    };
-    settings = {
-      user.name = "alphasm";
-      user.email = "alphasuthamedia@gmail.com";
-      init.defaultBranch = "master";
-      pull.rebase = false;
+    git = {
+      enable = true;
       lfs.enable = true;
+      ignores = [ ".DS_Store" ];
+      signing = {
+        key = "189710A9F3ED18E110296F94B4C990B982D2E33E";
+        format = "openpgp";
+        signByDefault = true;
+      };
+      settings = {
+        user.name = "alphasm";
+        user.email = "alphasuthamedia@gmail.com";
+        init.defaultBranch = "master";
+        pull.rebase = false;
+      };
     };
-    ignores = [ ".DS_Store" ];
+
+    gpg.enable = true;
+
+    bash = {
+      enable = true;
+      enableCompletion = true;
+      historySize = -1;
+      historyFileSize = -1;
+      historyControl = [ "erasedups" ];
+    };
+
+    starship.enable = true;
+    zoxide.enable = true;
+
+    fzf = {
+      enable = true;
+      enableBashIntegration = true; # termasuk Ctrls + r
+      fileWidgetCommand = "fd --type f"; # Ctrl+T
+      changeDirWidgetCommand = "fd --type d"; # Alt+C
+    };
+
+    fd = {
+      enable = true;
+      hidden = true;
+    };
+
+    tmux.enable = true;
+
+    alacritty = {
+      enable = true;
+      settings.font.normal.family = "JetBrainsMono Nerd Font";
+    };
+
+    aria2 = {
+      enable = true;
+      systemd.enable = true;
+    };
   };
 
-  programs.gpg.enable = true;
   services.gpg-agent = {
     enable = true;
-    enableBashIntegration = true;
     enableSshSupport = true;
+    pinentry.package = pkgs.pinentry-curses;
   };
 
-  programs.starship = {
+  xdg = {
     enable = true;
-    enableBashIntegration = true;
+    configFile."nvim".source = link "config/nvim";
   };
-
-  programs.bash = {
-    enable = true;
-    enableCompletion = true;
-    historySize = -1;
-    historyFileSize = -1;
-    historyControl = [ "erasedups" ];
-  };
-
-  programs.fzf = {
-    enable = true;
-    enableBashIntegration = true; # termasuk Ctrls + r
-    fileWidgetCommand = "fd --type f"; # Ctrl+T
-    changeDirWidgetCommand = "fd --type d"; # Alt+C
-  };
-
-  programs.zoxide = {
-    enable = true;
-    enableBashIntegration = true;
-  };
-
-  programs.tmux = {
-    enable = true;
-    extraConfig = builtins.readFile ./config/tmux.conf;
-  };
-
-  home.sessionVariables = {
-    EDITOR = "nvim";
-    VISUAL = "nvim";
-  };
-
-  programs.bash.shellAliases = {
-    vi = "nvim";
-    vim = "nvim";
-  };
-
-  xdg.enable = true;
-  targets.genericLinux.enable = true;
-  xdg.configFile."nvim" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/nvim";
-  };
-
-  xdg.configFile."alacritty".source = ./config/alacritty;
-
 }
