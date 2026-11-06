@@ -1,10 +1,11 @@
 { config, lib, pkgs, ... }:
 let
-  pwd = builtins.getEnv "PWD";
-  dotfiles = pwd;
+  dotfiles = "/home/alpha/dotfiles";
   link = path: config.lib.file.mkOutOfStoreSymlink "${dotfiles}/${path}";
 in
 {
+  nixpkgs.config.allowUnfree = true;
+
   home = {
     username = "alpha";
     homeDirectory = "/home/alpha";
@@ -29,6 +30,7 @@ in
       gcc
       nodejs
 
+      lens
       terraform
       kubectl
       (google-cloud-sdk.withExtraComponents [
@@ -48,19 +50,12 @@ in
       vi = "nvim";
       vim = "nvim";
       k = "kubectl";
-      hms = "home-manager switch --flake .#alpha --impure";
     };
   };
 
-  nixpkgs.config.allowUnfreePredicate =
-    pkg: builtins.elem (lib.getName pkg) [
-      "terraform"
-      "google-cloud-sdk"
-    ];
-
   fonts.fontconfig.enable = true;
   targets.genericLinux.enable = true;
-  
+
   programs = {
     home-manager.enable = true;
 
@@ -96,7 +91,7 @@ in
 
     fzf = {
       enable = true;
-      enableBashIntegration = true; # termasuk Ctrls + r
+      enableBashIntegration = true; # termasuk Ctrl+R
       fileWidgetCommand = "fd --type f"; # Ctrl+T
       changeDirWidgetCommand = "fd --type d"; # Alt+C
     };
@@ -107,7 +102,6 @@ in
     };
 
     tmux.enable = true;
-
 
     alacritty = {
       enable = true;
