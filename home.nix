@@ -29,6 +29,7 @@ in
       stylua
       gcc
       nodejs
+      seadrive-gui
 
       lens
       terraform
