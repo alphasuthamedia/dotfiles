@@ -25,11 +25,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792274446,
-        "narHash": "sha256-AM1HmBeDnB2B3dSiXuCYeu7Me+lHNpz/P39lVxGJBuQ=",
+        "lastModified": 1794251182,
+        "narHash": "sha256-R2sZBXiOJo3HAnvTiVkbbHDJy//JMlAwUKEiPbfqPXk=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "ab3823b4b24c0c3ca984c1f3ee577fd6d667424c",
+        "rev": "6eb2d33d1d0c95a37ef6443c88e6c1686012ee8b",
         "type": "github"
       },
       "original": {
@@ -39,7 +39,7 @@
         "type": "github"
       }
     },
-    "nixGL": {
+    "nixgl": {
       "inputs": {
         "flake-utils": "flake-utils",
         "nixpkgs": [
@@ -47,11 +47,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1762090880,
-        "narHash": "sha256-fbRQzIGPkjZa83MowjbD2ALaJf9y6KMDdJBQMKFeY/8=",
+        "lastModified": 1793798159,
+        "narHash": "sha256-c263mBFrDLv2/sguzQeKL99aJ4PkCdcUzcAuA5Cpzjo=",
         "owner": "nix-community",
         "repo": "nixGL",
-        "rev": "b6105297e6f0cd041670c3e8628394d4ee247ed5",
+        "rev": "4306ae1d15adf3d386f1462b330d4f2648404711",
         "type": "github"
       },
       "original": {
@@ -62,24 +62,21 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1792344208,
-        "narHash": "sha256-LuN4bh3fn6owOsi3FgOWkyvBviqYsm11bQmOQmGANWE=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "5a633e215b91b7988b12a75833bd0ae3ea138662",
-        "type": "github"
+        "lastModified": 1794165970,
+        "narHash": "sha256-YqwBRaXgqn0+I8BCsZVLkzd746X/84fr1/FvZiocsYE=",
+        "rev": "ac588ef1c914865dad517b337ea0eb9694a4021c",
+        "type": "tarball",
+        "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.13936.ac588ef1c914/nixexprs.tar.zst"
       },
       "original": {
-        "owner": "nixos",
-        "ref": "release-26.05",
-        "repo": "nixpkgs",
-        "type": "github"
+        "type": "tarball",
+        "url": "https://channels.nixos.org/nixos-26.05/nixexprs.tar.zst"
       }
     },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
-        "nixGL": "nixGL",
+        "nixgl": "nixgl",
         "nixpkgs": "nixpkgs"
       }
     },

@@ -1,57 +1,41 @@
 {
-  description = "Dotfiles alpha";
+  description = "Sutha's Homeland";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=release-26.05";
+    nixpkgs = {
+      type = "tarball";
+      url = "https://channels.nixos.org/nixos-26.05/nixexprs.tar.zst";
+    };
 
     home-manager = {
-      url = "github:nix-community/home-manager?ref=release-26.05";
+      type = "github";
+      owner = "nix-community";
+      repo = "home-manager";
+      ref = "release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixGL = {
+    self.lfs = true;
+    self.submodules = true;
+
+    # additionals
+    nixgl = {
       url = "github:nix-community/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
+      };
   };
 
-  outputs =
-    {
-      nixpkgs,
-      home-manager,
-      nixGL,
-      ...
-    }:
-    {
-      homeConfigurations = {
-        x86-linux = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+  outputs = { self, nixpkgs, home-manager, nixgl }: {
+    packages.x86_64-linux = {
+      default = home-manager.packages.x86_64-linux.default;
+    };
 
-          modules = [
-            ./home.nix
-            {
-              targets.genericLinux.enable = true;
-
-              targets.genericLinux.nixGL = {
-                packages = nixGL.packages.x86_64-linux;
-                defaultWrapper = "mesa";
-              };
-            }
-          ];
-        };
-
-        aarch64-darwin = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-
-          modules = [
-            ./home.nix
-          ];
-        };
-      };
-
-      formatter = {
-        x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt;
-        aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixfmt;
+    homeConfigurations = {
+      "alpha@debian" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+	extraSpecialArgs = { inherit nixgl; };
+	modules = [ ./home.nix ./linux.nix];
       };
     };
+  };
 }
