@@ -84,10 +84,6 @@
 
     tmux.enable = true;
 
-    alacritty = {
-      enable = true;
-      settings.font.normal.family = "JetBrainsMono Nerd Font";
-    };
 
     aria2.enable = true;
   };
