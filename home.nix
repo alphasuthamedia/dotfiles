@@ -18,6 +18,7 @@
       nodejs
       stow
 
+      lens
       terraform
       kubectl
       (google-cloud-sdk.withExtraComponents [
